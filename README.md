@@ -1,5 +1,5 @@
 # dating-app-practice
 
-![](demo.git)
+![](demo.gif)
 
 Ongoing project
