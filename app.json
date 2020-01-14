@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "dating-app-practice",
+    "description": "Latest",
+    "slug": "snack-7b5fe209-6359-4153-a4cf-39fff84e5d09",
+    "privacy": "unlisted",
+    "sdkVersion": "36.0.0",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "primaryColor": "#cccccc",
+    "icon": "./assets/icons/app-icon.jpg",
+    "loading": {
+      "icon": "./assets/icons/loading-icon.jpg",
+      "hideExponentText": false
+    },
+    "packagerOpts": {
+      "assetExts": [
+        "ttf",
+        "mp4",
+        "otf",
+        "xml"
+      ]
+    },
+    "ios": {
+      "bundleIdentifier": "io.erichung.dating-app-practice", 
+      "supportsTablet": true
+    }
+  }
+}
