@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Alert }  from 'react-native'; 
 import { Platform } from 'react-native'; 
 
-import MainNavigator from './components/MainNavigator'; 
+import NavigationViewController from './ViewController/NavigationViewController'; 
 
 import { db } from './testData'; 
 
@@ -43,7 +43,7 @@ export default function App() {
       {
         inProgress ?
           <Text style={{ alignSelf: 'center' }}>Loading...</Text> : 
-          <MainNavigator />
+          <NavigationViewController />
       }
     </AppContext.Provider>
   )

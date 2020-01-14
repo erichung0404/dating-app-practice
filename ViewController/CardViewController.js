@@ -4,10 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { PanGestureHandler, TapGestureHandler, State } from 'react-native-gesture-handler'; 
  
 import { AppContext } from '../App'; 
-import Card from './Card'; 
-import DecisionPanel from './DecisionPanel'; 
-import PhotoNavigator from './PhotoNavigator'; 
-import Swipeable from './Swipeable'; 
+
+import CardView from '../View/Home/CardView'; 
+import OptionsView from '../View/Home/OptionsView'; 
 
 const styles = StyleSheet.create({
   card_container: { 
@@ -197,7 +196,7 @@ export default function CardController(props) {
                         <Animated.View 
                           style={{position: 'absolute', opacity, height: '100%', width: '100%', transform: [{translateX: pan.x}, {translateY: pan.y}, {rotate: angleConfigs}], zIndex: 1 }}
                         >
-                          <Card profile={profile} infoPressHandler={openInfoScreen} swipeEnabled={swipeEnabled} style={cardStyle} infoPageEnabled={infoPageEnabled} />
+                          <CardView profile={profile} infoPressHandler={openInfoScreen} swipeEnabled={swipeEnabled} style={cardStyle} infoPageEnabled={infoPageEnabled} />
                         </Animated.View>
                     ); 
                   } else if(id === next && !infoPageEnabled) {
@@ -205,7 +204,7 @@ export default function CardController(props) {
                       <Animated.View 
                         style={{position: 'absolute', height: '100%', width: '100%'}}
                       >
-                        <Card profile={profile} swipeEnabled={false} style={cardStyle} />
+                        <CardView profile={profile} swipeEnabled={false} style={cardStyle} />
                       </Animated.View>
                     ); 
                   }
@@ -225,7 +224,7 @@ export default function CardController(props) {
             </View>
             </PanGestureHandler>
             <View style={{ flex: 1.5, zIndex: -1 }}>
-              <DecisionPanel dislikeHandler={handleDislike} likeHandler={handleLike} />
+              <OptionsView dislikeHandler={handleDislike} likeHandler={handleLike} />
             </View>
           </View>
       }

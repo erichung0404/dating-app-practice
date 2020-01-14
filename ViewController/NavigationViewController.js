@@ -1,16 +1,16 @@
 import React from 'react'; 
-import { createAppContainer } from "react-navigation";
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs'; 
+import { createAppContainer } from "react-navigation";
 import { Ionicons } from '@expo/vector-icons';
 
-import HomeScreen from './HomeScreen'; 
-import ProfileScreen from './ProfileScreen'; 
-import MessengerScreen from './MessengerScreen'; 
+import HomeView from '../View/Home/HomeView'; 
+import ProfileView from '../View/Profile/ProfileView'; 
+import MessageView from '../View/Message/MessageView'; 
 
-const MainNavigator = createMaterialTopTabNavigator(
+const NavigationViewController = createMaterialTopTabNavigator(
   {
-    ProfileScreen: { 
-      screen: ProfileScreen, 
+    ProfileView: { 
+      screen: ProfileView, 
       navigationOptions: {
         tabBarIcon: ({tintColor, focused}) => (
             <Ionicons
@@ -22,8 +22,8 @@ const MainNavigator = createMaterialTopTabNavigator(
       }, 
       swipeEnabled: true
     }, 
-    HomeScreen: { 
-      screen: HomeScreen, 
+    HomeView: { 
+      screen: HomeView, 
       navigationOptions: ({ navigation }) => {
         const { params } = navigation.state; 
 
@@ -40,8 +40,8 @@ const MainNavigator = createMaterialTopTabNavigator(
         }
       }
     }, 
-    MessengerScreen: { 
-      screen: MessengerScreen, 
+    MessageView: { 
+      screen: MessageView, 
       navigationOptions: {
         tabBarIcon: ({tintColor, focused}) => (
           <Ionicons
@@ -55,7 +55,7 @@ const MainNavigator = createMaterialTopTabNavigator(
     }, 
   },
   {
-    initialRouteName: "HomeScreen",
+    initialRouteName: "HomeView",
     animationEnabled: true,
     tabBarOptions: {
       showLabel: false, 
@@ -68,4 +68,4 @@ const MainNavigator = createMaterialTopTabNavigator(
   }
 );
 
-export default createAppContainer(MainNavigator);
+export default createAppContainer(NavigationViewController); 

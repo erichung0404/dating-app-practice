@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableWithoutFeedback, Animated } from 'react-native'; 
 import { Ionicons } from '@expo/vector-icons'; 
 
-export default function Info(props) {
+export default function CardInfoView(props) {
   const [enabled, setEnabled] = useState(false); 
   const { profile, onPress, textStyle } = props; 
 
