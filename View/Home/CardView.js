@@ -3,18 +3,18 @@ import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import PhotoViewController from '../../ViewController/PhotoViewController'; 
-import CardInfoView from './CardInfoView'; 
+import CardInfoViewController from '../../ViewController/CardInfoViewController'; 
 
-export default function Card(props) {
+export default function CardView(props) {
   const { profile, infoPressHandler, swipeEnabled, style, infoPageEnabled } = props; 
   const { album } = props.profile;  
  
   return (
-    <View style={{ flex: 1 }}>
-      <View style={{ flex: 1, width: '100%', alignSelf: 'center' }}>
-        <PhotoViewController photos={album} swipeEnabled={swipeEnabled} imageStyle={style.imageStyle} />
-        <CardInfoView profile={profile} onPress={infoPressHandler} textStyle={style.textStyle} enabled={infoPageEnabled} />
-      </View>
+    <View style={{ flex: 1, alignContent: 'center' }}>
+      {
+      	<PhotoViewController photos={album} swipeEnabled={swipeEnabled} imageStyle={style.imageStyle} />
+      }
+      <CardInfoViewController profile={profile} onPress={infoPressHandler} enabled={infoPageEnabled} />
     </View>
   ); 
 }

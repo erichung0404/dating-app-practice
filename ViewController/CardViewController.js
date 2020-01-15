@@ -33,11 +33,10 @@ export default function CardController(props) {
   const borderRadius = new Animated.Value(10); 
   const width = new Animated.Value(0); 
   const height = new Animated.Value(1);
-  const textColor = new Animated.Value(0); 
-  const textPosition = new Animated.Value(0); 
 
   const cardStyle = {
     imageStyle: { 
+      position: 'absolute', 
       borderRadius, 
       width: width.interpolate({
         inputRange: [0, 1], 
@@ -46,12 +45,6 @@ export default function CardController(props) {
       height: height.interpolate({
         inputRange: [0, 1], 
         outputRange: ['80%', '100%']
-      })
-    }, 
-    textStyle: {
-      color: textColor.interpolate({
-        inputRange: [0, 1], 
-        outputRange: ['white', 'black']
       })
     }
   }
@@ -151,8 +144,6 @@ export default function CardController(props) {
     borderRadius.setValue(0); 
     width.setValue(1);
     height.setValue(0); 
-    textColor.setValue(1); 
-    textPosition.setValue(1); 
     setInfoPageEnabled(true); 
   }
 
@@ -163,8 +154,6 @@ export default function CardController(props) {
     borderRadius.setValue(10); 
     width.setValue(0);
     height.setValue(1); 
-    textColor.setValue(0); 
-    textPosition.setValue(0); 
     setInfoPageEnabled(false); 
   }
 
@@ -187,7 +176,7 @@ export default function CardController(props) {
               onGestureEvent={onGestureEvent} 
               onHandlerStateChange={onHandlerStateChange}
             >
-            <View style={{ flex: 8.5, justifyContent: 'flex-end' }}>
+            <View style={{ flex: 8.5 }}>
             {
               profiles
                 .map((profile, id) => {
@@ -196,7 +185,9 @@ export default function CardController(props) {
                         <Animated.View 
                           style={{position: 'absolute', opacity, height: '100%', width: '100%', transform: [{translateX: pan.x}, {translateY: pan.y}, {rotate: angleConfigs}], zIndex: 1 }}
                         >
+                        {
                           <CardView profile={profile} infoPressHandler={openInfoScreen} swipeEnabled={swipeEnabled} style={cardStyle} infoPageEnabled={infoPageEnabled} />
+                        }
                         </Animated.View>
                     ); 
                   } else if(id === next && !infoPageEnabled) {
@@ -204,7 +195,7 @@ export default function CardController(props) {
                       <Animated.View 
                         style={{position: 'absolute', height: '100%', width: '100%'}}
                       >
-                        <CardView profile={profile} swipeEnabled={false} style={cardStyle} />
+                        <CardView profile={profile} swipeEnabled={false} style={cardStyle} infoPageEnabled={false} />
                       </Animated.View>
                     ); 
                   }
@@ -212,14 +203,12 @@ export default function CardController(props) {
             }
             {
               infoPageEnabled ? 
-              <Animated.View style={{ position: 'absolute', zIndex: 1, alignSelf: 'flex-end' }}>
                 <Ionicons
                   name={'ios-arrow-dropdown-circle'}
                   size={60}
-                  style={{ color: 'red', paddingRight: '5%', paddingBottom: '20%' }}
+                  style={{ color: 'red', alignSelf: 'flex-end', paddingRight: '5%', top: '75%', zIndex: 1 }}
                   onPress={closeInfoScreen}
-                />
-              </Animated.View> : null
+                /> : null
             }
             </View>
             </PanGestureHandler>

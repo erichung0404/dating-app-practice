@@ -7,11 +7,18 @@ const { width, height } = Dimensions.get('window');
 const SPACE_SIZE = 10; // desired space between indicators
 const HALF_SCREEN_WIDTH = width / 2; 
 
-export default function PhotoNavigator(props) {
+export default function PhotoViewController(props) {
   const { photos, swipeEnabled, imageStyle, isInfoPageEnabled } = props; 
-  const curr = new Animated.Value(0); 
-  const prev = new Animated.Value(0); 
-  const next = new Animated.Value(1); 
+
+  /**
+   *  use state to prevent from re-rendering when open/close CardInfoView
+   *  or images will be re-rendered but pointers are not updated
+   *  so the photo will not respond to tap since animataed.view
+   *  has referenced new pointers
+   */
+  const [curr, setCurr] = useState(new Animated.Value(0)); 
+  const [prev, setPrev] = useState(new Animated.Value(0)); 
+  const [next, setNext] = useState(new Animated.Value(1)); 
 
   const list = [{
     panX: new Animated.Value(0), 
@@ -46,7 +53,7 @@ export default function PhotoNavigator(props) {
 
   function onHandlerStateChange({ nativeEvent }) {
     const { translationX, velocityX, state } = nativeEvent; 
-    
+
     if(state === State.BEGAN) {
       stopAllAnimation(); 
     }else if(state === State.END) {
