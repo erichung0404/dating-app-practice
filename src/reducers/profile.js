@@ -7,11 +7,20 @@ import {
 const initialState = {
 	profiles: [], 
 	loading: true, 
-	error: null
+	message: '', 
+	error: false
 }
 
 export default (state=initialState, action) => {
 	switch(action.type) {
+		case PROFILE_FETCH_BEGIN: 
+			return {
+				...state, 
+				profiles: [], 
+				loading: true, 
+				message: '', 
+				error: false
+			}
 		case PROFILE_FETCH_SUCCESS: 
 			return {
 				...state, 
@@ -22,9 +31,9 @@ export default (state=initialState, action) => {
 			return {
 				...state, 
 				loading: false, 
-				error: action.payload.message
+				message: action.payload.message, 
+				error: true
 			}
-		case PROFILE_FETCH_BEGIN: 
 		default: 
 			return state; 
 	}

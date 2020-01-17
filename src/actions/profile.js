@@ -22,7 +22,9 @@ export const fetchRecommendedProfiles = (userId) => {
 				.catch(error => {
 					dispatch({
 						type: PROFILE_FETCH_ERROR, 
-						message: error.message
+						payload: {
+							message: error.message
+						}
 					})
 				})
 	}

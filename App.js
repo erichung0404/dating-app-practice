@@ -11,10 +11,17 @@ const height = Platform.OS === 'ios' ? 20 : 0;
 const userId = 2; 
 
 function App(props) {
-  const { profiles, loading, error, dispatch } = props; 
+  const { 
+    profiles, 
+    loading, 
+    error, 
+    message, 
+    dispatch 
+  } = props; 
 
   useEffect(() => {
     dispatch(fetchRecommendedProfiles(userId)); 
+    if(error) alert(message)
   }, [])
 
   return (
@@ -33,7 +40,8 @@ const mapStateToProps = state => {
   return {
     profiles, 
     loading, 
-    error
+    error, 
+    message
   } = state.profile; 
 }
 
