@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import { PanGestureHandler, TapGestureHandler, State } from 'react-native-gesture-handler'; 
  
-import CardView from '../View/Home/CardView'; 
-import OptionsView from '../View/Home/OptionsView'; 
+import Card from '../components/Card'; 
+import Options from '../components/Options';
 
 import { 
   updateCurr, 
   openInfoScreen, 
   closeInfoScreen
-} from '../src/actions/card'; 
+} from '../actions/card'; 
 
 const styles = StyleSheet.create({
   card_container: { 
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   }
 })
 
-function CardViewController(props) {
+function CardController(props) {
   const { 
     navigation, 
     profiles, 
@@ -183,7 +183,7 @@ function CardViewController(props) {
                           style={{position: 'absolute', opacity, height: '100%', width: '100%', transform: [{translateX: pan.x}, {translateY: pan.y}, {rotate: angleConfigs}], zIndex: 1 }}
                         >
                         {
-                          <CardView profile={profile} infoPressHandler={() => openInfoScreen(animation)} swipeEnabled={swipeEnabled} style={cardStyle} infoPageEnabled={showInfo} />
+                          <Card profile={profile} infoPressHandler={() => openInfoScreen(animation)} swipeEnabled={swipeEnabled} style={cardStyle} infoPageEnabled={showInfo} />
                         }
                         </Animated.View>
                     ); 
@@ -192,7 +192,7 @@ function CardViewController(props) {
                       <Animated.View 
                         style={{position: 'absolute', height: '100%', width: '100%'}}
                       >
-                        <CardView profile={profile} swipeEnabled={false} style={cardStyle} infoPageEnabled={false} />
+                        <Card profile={profile} swipeEnabled={false} style={cardStyle} infoPageEnabled={false} />
                       </Animated.View>
                     ); 
                   }
@@ -210,7 +210,7 @@ function CardViewController(props) {
             </View>
             </PanGestureHandler>
             <View style={{ flex: 1.5, zIndex: -1 }}>
-              <OptionsView dislikeHandler={handleDislike} likeHandler={handleLike} />
+              <Options dislikeHandler={handleDislike} likeHandler={handleLike} />
             </View>
           </View>
       }
@@ -230,4 +230,4 @@ const mapDispatchToProps = dispatch => ({
   closeInfoScreen: animation => dispatch(closeInfoScreen(animation))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(CardViewController); 
+export default connect(mapStateToProps, mapDispatchToProps)(CardController); 

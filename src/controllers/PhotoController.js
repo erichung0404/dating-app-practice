@@ -1,12 +1,12 @@
 import React from 'react'; 
+import { connect } from 'react-redux'; 
+import Touchable from 'react-native-platform-touchable';
 import { 
   View, 
   Dimensions, 
   TouchableWithoutFeedback, 
   Animated 
 } from 'react-native'; 
-import { connect } from 'react-redux'; 
-import Touchable from 'react-native-platform-touchable';
 import { 
   PanGestureHandler, 
   TapGestureHandler, 
@@ -17,7 +17,7 @@ const { width, height } = Dimensions.get('window');
 const SPACE_SIZE = 10; // desired space between indicators
 const HALF_SCREEN_WIDTH = width / 2; 
 
-function PhotoViewController(props) {
+function PhotoController(props) {
   /**
    * use state to prevent pointers from re-assigned
    * after open/close info page
@@ -231,4 +231,4 @@ const mapStateToProps = state => ({
   next: state.photo.next
 })
 
-export default connect(mapStateToProps)(PhotoViewController); 
+export default connect(mapStateToProps)(PhotoController); 

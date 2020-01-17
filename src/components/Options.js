@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native'; 
 import { Ionicons } from '@expo/vector-icons';
 
-export default function OptionsView(props) {
+export default function Options(props) {
   const { dislikeHandler, likeHandler } = props; 
   
   return (

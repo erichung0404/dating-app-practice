@@ -1,16 +1,17 @@
 import React from 'react'; 
+import { Platform } from 'react-native'; 
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs'; 
 import { createAppContainer } from "react-navigation";
 import { Ionicons } from '@expo/vector-icons';
 
-import HomeView from '../View/Home/HomeView'; 
-import ProfileView from '../View/Profile/ProfileView'; 
-import MessageView from '../View/Message/MessageView'; 
+import HomeController from './HomeController'; 
+import ProfileController from './ProfileController'; 
+import MessageController from './MessageController'; 
 
-const NavigationViewController = createMaterialTopTabNavigator(
+const NavigationController = createMaterialTopTabNavigator(
   {
-    ProfileView: { 
-      screen: ProfileView, 
+    ProfileController: { 
+      screen: ProfileController, 
       navigationOptions: {
         tabBarIcon: ({tintColor, focused}) => (
             <Ionicons
@@ -22,8 +23,8 @@ const NavigationViewController = createMaterialTopTabNavigator(
       }, 
       swipeEnabled: true
     }, 
-    HomeView: { 
-      screen: HomeView, 
+    HomeController: { 
+      screen: HomeController, 
       navigationOptions: ({ navigation }) => {
         const { params } = navigation.state; 
 
@@ -40,8 +41,8 @@ const NavigationViewController = createMaterialTopTabNavigator(
         }
       }
     }, 
-    MessageView: { 
-      screen: MessageView, 
+    MessageController: { 
+      screen: MessageController, 
       navigationOptions: {
         tabBarIcon: ({tintColor, focused}) => (
           <Ionicons
@@ -55,17 +56,20 @@ const NavigationViewController = createMaterialTopTabNavigator(
     }, 
   },
   {
-    initialRouteName: "HomeView",
+    initialRouteName: "HomeController",
     animationEnabled: true,
     tabBarOptions: {
       showLabel: false, 
       showIcon: true, 
       activeTintColor: 'red', 
       inactiveTintColor: 'gray', 
-      style: { backgroundColor: 'transparent' }, 
+      style: { 
+        backgroundColor: 'transparent', 
+        marginTop: Platform.OS === 'ios' ? 20 : 0
+      }, 
       indicatorStyle: { height: 0 }
     }
   }
 );
 
-export default createAppContainer(NavigationViewController); 
+export default createAppContainer(NavigationController); 
