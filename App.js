@@ -1,50 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Alert }  from 'react-native'; 
-import { Platform } from 'react-native'; 
+import { View, Text, Alert, Platform }  from 'react-native'; 
+import { connect } from 'react-redux'; 
 
 import NavigationViewController from './ViewController/NavigationViewController'; 
 
-import { db } from './testData'; 
-
-export const AppContext = React.createContext({}); 
+import { fetchRecommendedProfiles } from './src/actions/profile'; 
 
 const height = Platform.OS === 'ios' ? 20 : 0; 
 
-export default function App() {
-  const [fetchProfiles, setFetchProfiles] = useState({
-    profiles: [], 
-    inProgress: true
-  });
+const userId = 2; 
+
+function App(props) {
+  const { profiles, loading, error, dispatch } = props; 
 
   useEffect(() => {
-    queryDB(db)
-      .then(data => setFetchProfiles({ profiles: data, inProgress: false }))
-      .catch(error => Alert.alert(error.message)); 
+    dispatch(fetchRecommendedProfiles(userId)); 
   }, [])
 
-  function queryDB(db) { 
-    // simulate asynchronous db query
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if(db.profiles !== undefined) {
-          resolve(db.profiles); 
-        } else {
-          reject(new Error('empty profiles')); 
-        }
-      }, 2000); 
-    }); 
-  }
-
-  const { profiles, inProgress } = fetchProfiles; 
-  
   return (
-    <AppContext.Provider value={{ profiles }}>
+    <View style={{ flex: 1 }}>
       <View style={{ height }} />
       {
-        inProgress ?
+        loading ?
           <Text style={{ alignSelf: 'center' }}>Loading...</Text> : 
           <NavigationViewController />
       }
-    </AppContext.Provider>
+    </View>
   )
 }
+
+const mapStateToProps = state => {
+  return {
+    profiles, 
+    loading, 
+    error
+  } = state.profile; 
+}
+
+export default connect(mapStateToProps)(App); 

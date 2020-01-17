@@ -1,12 +1,17 @@
-import React, { useState, useContext } from 'react'; 
+import React, { useState } from 'react'; 
 import { View, Text, StyleSheet, Animated, Image, PanResponder, Modal } from 'react-native';
+import { connect } from 'react-redux'; 
 import { Ionicons } from '@expo/vector-icons';
 import { PanGestureHandler, TapGestureHandler, State } from 'react-native-gesture-handler'; 
  
-import { AppContext } from '../App'; 
-
 import CardView from '../View/Home/CardView'; 
 import OptionsView from '../View/Home/OptionsView'; 
+
+import { 
+  updateCurr, 
+  openInfoScreen, 
+  closeInfoScreen
+} from '../src/actions/card'; 
 
 const styles = StyleSheet.create({
   card_container: { 
@@ -15,14 +20,19 @@ const styles = StyleSheet.create({
   }
 })
 
-export default function CardController(props) {
-  const [curr, setCurr] = useState(0); 
-  const [infoPageEnabled, setInfoPageEnabled] = useState(false); 
-  const dragEnabled = !infoPageEnabled; 
-  const swipeEnabled = infoPageEnabled; 
-  const { profiles } = useContext(AppContext); 
+function CardViewController(props) {
+  const { 
+    navigation, 
+    profiles, 
+    curr, 
+    showInfo, 
+    updateCurr, 
+    openInfoScreen, 
+    closeInfoScreen
+  } = props; 
 
-  const { navigation } = props; 
+  const dragEnabled = !showInfo; 
+  const swipeEnabled = showInfo; 
 
   const pan = new Animated.ValueXY(); 
   const angle = new Animated.Value(0); 
@@ -33,6 +43,13 @@ export default function CardController(props) {
   const borderRadius = new Animated.Value(10); 
   const width = new Animated.Value(0); 
   const height = new Animated.Value(1);
+
+  const animation = {
+    navigation, 
+    borderRadius, 
+    width, 
+    height
+  };
 
   const cardStyle = {
     imageStyle: { 
@@ -71,7 +88,7 @@ export default function CardController(props) {
           rotate(0, 0)
         ]).start(() => { 
           opacity.setValue(1); 
-          setCurr(next); 
+          updateCurr(next); 
         }); 
       } else {
         spring({x: 0, y: 0}).start();
@@ -119,7 +136,7 @@ export default function CardController(props) {
       position({x: 0, y: 0}, 0), 
       rotate(0, 100)
     ]).start(() => { 
-      setCurr(next); 
+      updateCurr(next); 
     }); 
   }
 
@@ -133,28 +150,8 @@ export default function CardController(props) {
       position({x: 0, y: 0}, 0), 
       rotate(0, 0)
     ]).start(() => { 
-      setCurr(next); 
+      updateCurr(next); 
     }); 
-  }
-
-  function openInfoScreen() {
-    if(infoPageEnabled) return; 
-
-    navigation.setParams({tabBarVisible: false}); 
-    borderRadius.setValue(0); 
-    width.setValue(1);
-    height.setValue(0); 
-    setInfoPageEnabled(true); 
-  }
-
-  function closeInfoScreen() {
-    if(!infoPageEnabled) return; 
-
-    navigation.setParams({tabBarVisible: true}); 
-    borderRadius.setValue(10); 
-    width.setValue(0);
-    height.setValue(1); 
-    setInfoPageEnabled(false); 
   }
 
   const angleConfigs = angle.interpolate({
@@ -186,11 +183,11 @@ export default function CardController(props) {
                           style={{position: 'absolute', opacity, height: '100%', width: '100%', transform: [{translateX: pan.x}, {translateY: pan.y}, {rotate: angleConfigs}], zIndex: 1 }}
                         >
                         {
-                          <CardView profile={profile} infoPressHandler={openInfoScreen} swipeEnabled={swipeEnabled} style={cardStyle} infoPageEnabled={infoPageEnabled} />
+                          <CardView profile={profile} infoPressHandler={() => openInfoScreen(animation)} swipeEnabled={swipeEnabled} style={cardStyle} infoPageEnabled={showInfo} />
                         }
                         </Animated.View>
                     ); 
-                  } else if(id === next && !infoPageEnabled) {
+                  } else if(id === next && !showInfo) {
                     return (
                       <Animated.View 
                         style={{position: 'absolute', height: '100%', width: '100%'}}
@@ -202,12 +199,12 @@ export default function CardController(props) {
                 }) 
             }
             {
-              infoPageEnabled ? 
+              showInfo ? 
                 <Ionicons
                   name={'ios-arrow-dropdown-circle'}
                   size={60}
                   style={{ color: 'red', alignSelf: 'flex-end', paddingRight: '5%', top: '75%', zIndex: 1 }}
-                  onPress={closeInfoScreen}
+                  onPress={() => closeInfoScreen(animation)}
                 /> : null
             }
             </View>
@@ -220,3 +217,17 @@ export default function CardController(props) {
     </View>
   ); 
 }
+
+const mapStateToProps = state => ({
+  profiles: state.profile.profiles, 
+  curr: state.card.curr, 
+  showInfo: state.card.showInfo
+})
+
+const mapDispatchToProps = dispatch => ({
+  updateCurr: dest => dispatch(updateCurr(dest)), 
+  openInfoScreen: animation => dispatch(openInfoScreen(animation)), 
+  closeInfoScreen: animation => dispatch(closeInfoScreen(animation))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(CardViewController); 

@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "dating-app-practice",
+    "entryPoint": "./index.js", 
     "description": "Latest",
     "slug": "snack-7b5fe209-6359-4153-a4cf-39fff84e5d09",
     "privacy": "unlisted",

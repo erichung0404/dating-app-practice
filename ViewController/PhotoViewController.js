@@ -41,14 +41,28 @@ export default function PhotoViewController(props) {
     stopAllAnimation(); 
 
     // show target image
-    list[curr._value].imageOpacity.setValue(0); 
-    list[target._value].imageOpacity.setValue(1); 
+    if(curr._value !== target._value && 
+        target._value < photos.length &&
+        target._value >= 0) {
+      list[curr._value].imageOpacity.setValue(0); 
+      list[target._value].imageOpacity.setValue(1); 
+      // show target indicator
+      updateIndicators(target); 
 
-    // show target indicator
-    updateIndicators(target); 
+      // update pointers
+      updatePointers(target); 
+    }
+  }
 
-    // update pointers
-    updatePointers(target); 
+  function updateIndicators(target) {
+    list[curr._value].indicatorOpacity.setValue(0.5); 
+    list[target._value].indicatorOpacity.setValue(1); 
+  }
+
+  function updatePointers(target) {
+    curr.setValue(target._value); 
+    prev.setValue(curr._value-1); 
+    next.setValue(curr._value+1); 
   }
 
   function onHandlerStateChange({ nativeEvent }) {
@@ -118,17 +132,6 @@ export default function PhotoViewController(props) {
         })
       ]).start(() => reset()); 
     }
-  }
-
-  function updateIndicators(target) {
-    list[curr._value].indicatorOpacity.setValue(0.5); 
-    list[target._value].indicatorOpacity.setValue(1); 
-  }
-
-  function updatePointers(target) {
-    curr.setValue(target._value); 
-    prev.setValue(curr._value - (curr._value === 0 ? 0 : 1)); 
-    next.setValue(curr._value + (curr._value === list.length-1 ? 0 : 1)); 
   }
 
   function reset() {

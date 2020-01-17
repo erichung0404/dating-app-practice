@@ -1,14 +1,3 @@
-import React from 'react'; 
-import { View, StyleSheet } from 'react-native'; 
-
-const styles = StyleSheet.create({
-  photo: {
-    alignSelf: 'center', 
-    width: 50, 
-    height: 100
-  }
-})
-
 export const db = {
   profiles: [
     {
