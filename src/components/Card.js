@@ -11,9 +11,7 @@ export default function Card(props) {
  
   return (
     <View style={{ flex: 1, alignContent: 'center' }}>
-      {
-      	<PhotoController photos={album} swipeEnabled={swipeEnabled} imageStyle={style.imageStyle} />
-      }
+    	<PhotoController photos={album} swipeEnabled={swipeEnabled} imageStyle={style.imageStyle} />
       <Info profile={profile} onPress={infoPressHandler} enabled={infoPageEnabled} />
     </View>
   ); 

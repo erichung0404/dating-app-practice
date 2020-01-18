@@ -81,7 +81,7 @@ function PhotoController(props) {
     const { translationX, velocityX, state } = nativeEvent; 
 
     if(state === State.BEGAN) {
-      stopAllAnimation(); 
+      // stopAllAnimation(); 
     }else if(state === State.END) {
       onSwipeEnd(translationX > 0 ? prev : next, translationX, velocityX); 
     }
