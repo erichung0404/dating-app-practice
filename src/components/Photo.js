@@ -48,6 +48,69 @@ export default function Photo(props) {
   const INDICATOR_WIDTH = (width - SPACE_SIZE * (photos.length + 1)) / photos.length; 
   const INDICATOR_HEIGHT = INDICATOR_WIDTH / 20; 
 
+  return (
+    <PanGestureHandler 
+      enabled={swipeEnabled}
+      onGestureEvent={({ nativeEvent }) => {
+        const { translationX } = nativeEvent; 
+        onSwipeActive(translationX); 
+      }}
+      onHandlerStateChange={onHandlerStateChange}
+    >
+      <Animated.View style={{...imageStyle, alignSelf: 'center'}}>
+      {
+        list.map((item, id) => {
+          return (
+            <Animated.View style={{ position: 'absolute', width: '100%', height: '100%', alignItems: 'center', opacity: item.imageOpacity, transform:[{translateX: item.panX}] }}>
+              <Animated.Image
+                style={{ width: '100%', height: '100%', borderRadius: imageStyle.borderRadius }}
+                source={photos[id]}
+              />
+            </Animated.View>
+          ); 
+        })
+      }
+        <View style={{ position: 'absolute', height: '100%', width: '100%' }}>
+          <View style={{ position: 'absolute', height: '100%', width: '100%' }}>
+            <View style={{ flex: 1, flexDirection: 'row' }}>
+              <TapGestureHandler
+                onHandlerStateChange={({ nativeEvent }) => {
+                  if(nativeEvent.state === State.END) onPress(prev); 
+                }}
+              >
+                <View style={{ flex: 1 }} />
+              </TapGestureHandler>
+              <TapGestureHandler
+                onHandlerStateChange={({ nativeEvent }) => {
+                  if(nativeEvent.state === State.END) onPress(next); 
+                }}
+              >
+                <View style={{ flex: 1 }} />
+              </TapGestureHandler>
+            </View>
+          </View>
+          <View style={{ position: 'absolute', height: 20, width: '100%', paddingTop: 20 }}>
+            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
+            {
+              list.map((item, id) => {
+                return (
+                  <TouchableWithoutFeedback 
+                    onPress={() => onPress(new Animated.Value(id))}
+                  >
+                    <Animated.View 
+                      style={{ width: INDICATOR_WIDTH, height: INDICATOR_HEIGHT, borderRadius: 50, backgroundColor: 'white', opacity: item.indicatorOpacity }} 
+                    />
+                  </TouchableWithoutFeedback>
+                ); 
+              })
+            }
+            </View>
+          </View>
+        </View>
+      </Animated.View>
+    </PanGestureHandler>
+  )
+
   function onPress(target) {
     // show target image
     if(list[target._value]) {
@@ -60,26 +123,6 @@ export default function Photo(props) {
       // update pointers
       updatePointers(target); 
     }
-  }
-
-  function stopAllAnimations() {
-    for(let i = prev._value; i <= next._value; i++) {
-      if(!list[i]) continue; 
-      list[i].panX.stopAnimation(); 
-      list[i].imageOpacity.stopAnimation(); 
-      list[i].indicatorOpacity.stopAnimation(); 
-    }
-  }
-
-  function updateIndicators(target) {
-    list[curr._value].indicatorOpacity.setValue(0.5); 
-    list[target._value].indicatorOpacity.setValue(1); 
-  }
-
-  function updatePointers(target) {
-    curr.setValue(target._value); 
-    prev.setValue(curr._value-1); 
-    next.setValue(curr._value+1); 
   }
 
   function onHandlerStateChange({ nativeEvent }) {
@@ -143,81 +186,14 @@ export default function Photo(props) {
     }
   }
 
-  function reset() {
-    list[curr._value].imageOpacity.setValue(1); 
-    list[curr._value].panX.setValue(0); 
-
-    if(curr._value !== prev._value) {
-      list[prev._value].imageOpacity.setValue(0); 
-      list[prev._value].panX.setValue(0); 
-    }
-
-    if(curr._value !== next._value) {
-      list[next._value].imageOpacity.setValue(0); 
-      list[next._value].panX.setValue(0);
-    }
+  function updateIndicators(target) {
+    list[curr._value].indicatorOpacity.setValue(0.5); 
+    list[target._value].indicatorOpacity.setValue(1); 
   }
 
-  return (
-    <PanGestureHandler 
-      enabled={swipeEnabled}
-      onGestureEvent={({ nativeEvent }) => {
-        const { translationX } = nativeEvent; 
-        onSwipeActive(translationX); 
-      }}
-      onHandlerStateChange={onHandlerStateChange}
-    >
-    <Animated.View style={{...imageStyle, alignSelf: 'center'}}>
-    {
-      list.map((item, id) => {
-        return (
-          <Animated.View style={{ position: 'absolute', width: '100%', height: '100%', alignItems: 'center', opacity: item.imageOpacity, transform:[{translateX: item.panX}] }}>
-            <Animated.Image
-              style={{ width: '100%', height: '100%', borderRadius: imageStyle.borderRadius }}
-              source={photos[id]}
-            />
-          </Animated.View>
-        ); 
-      })
-    }
-      <View style={{ position: 'absolute', height: '100%', width: '100%' }}>
-        <View style={{ position: 'absolute', height: '100%', width: '100%' }}>
-          <View style={{ flex: 1, flexDirection: 'row' }}>
-            <TapGestureHandler
-              onHandlerStateChange={({ nativeEvent }) => {
-                if(nativeEvent.state === State.END) onPress(prev); 
-              }}
-            >
-              <View style={{ flex: 1 }} />
-            </TapGestureHandler>
-            <TapGestureHandler
-              onHandlerStateChange={({ nativeEvent }) => {
-                if(nativeEvent.state === State.END) onPress(next); 
-              }}
-            >
-              <View style={{ flex: 1 }} />
-            </TapGestureHandler>
-          </View>
-        </View>
-        <View style={{ position: 'absolute', height: 20, width: '100%', paddingTop: 20 }}>
-          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
-          {
-            list.map((item, id) => {
-              return (
-                <TouchableWithoutFeedback 
-                  onPress={() => onPress(new Animated.Value(id))}
-                >
-                  <Animated.View 
-                    style={{ width: INDICATOR_WIDTH, height: INDICATOR_HEIGHT, borderRadius: 50, backgroundColor: 'white', opacity: item.indicatorOpacity }} 
-                  />
-                </TouchableWithoutFeedback>
-              ); 
-            })
-          }
-          </View>
-        </View>
-      </View>
-    </Animated.View>
-    </PanGestureHandler>
-  )
+  function updatePointers(target) {
+    curr.setValue(target._value); 
+    prev.setValue(curr._value-1); 
+    next.setValue(curr._value+1); 
+  }
 }
