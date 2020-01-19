@@ -2,7 +2,7 @@ import { Animated } from 'react-native';
 
 const initialState = {
 	curr: new Animated.Value(0), 
-	prev: new Animated.Value(0), 
+	prev: new Animated.Value(-1), 
 	next: new Animated.Value(1)
 }
 
