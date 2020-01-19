@@ -4,7 +4,8 @@ import {
   View, 
   Dimensions, 
   TouchableWithoutFeedback, 
-  Animated 
+  Animated, 
+  StyleSheet
 } from 'react-native'; 
 import { 
   PanGestureHandler, 
@@ -54,57 +55,78 @@ export default function Photo(props) {
       onGestureEvent={onSwipeActive}
       onHandlerStateChange={onHandlerStateChange}
     >
-      <Animated.View style={{...imageStyle, alignSelf: 'center'}}>
-      {
-        list.map((item, id) => {
-          return (
-            <Animated.View style={{ position: 'absolute', width: '100%', height: '100%', alignItems: 'center', opacity: item.imageOpacity, transform:[{translateX: item.panX}] }}>
-              <Animated.Image
-                style={{ width: '100%', height: '100%', borderRadius: imageStyle.borderRadius }}
-                source={photos[id]}
-              />
-            </Animated.View>
-          ); 
-        })
-      }
-        <View style={{ position: 'absolute', height: '100%', width: '100%' }}>
-          <View style={{ position: 'absolute', height: '100%', width: '100%' }}>
-            <View style={{ flex: 1, flexDirection: 'row' }}>
-              <TapGestureHandler
-                onHandlerStateChange={({ nativeEvent }) => {
-                  if(nativeEvent.state === State.END) onPress(prev); 
+      <View style={ styles.container }>
+        <Animated.View 
+          style={{
+            ...imageStyle, 
+            ...styles.animation_container
+          }}
+        >
+        {
+          list.map((item, id) => {
+            return (
+              <Animated.View 
+                style={{ 
+                  ...styles.image_animation_container, 
+                  opacity: item.imageOpacity, 
+                  transform:[{translateX: item.panX}]
                 }}
               >
-                <View style={{ flex: 1 }} />
-              </TapGestureHandler>
-              <TapGestureHandler
-                onHandlerStateChange={({ nativeEvent }) => {
-                  if(nativeEvent.state === State.END) onPress(next); 
-                }}
-              >
-                <View style={{ flex: 1 }} />
-              </TapGestureHandler>
+                <Animated.Image
+                  style={{ 
+                    ...styles.image_animation, 
+                    borderRadius: imageStyle.borderRadius
+                  }}
+                  source={photos[id]}
+                />
+              </Animated.View>
+            ); 
+          })
+        }
+          <View style={styles.touchable_container}>
+            <View style={styles.touchable_panel_container}>
+              <View style={styles.touchable_panel_row}>
+                <TapGestureHandler
+                  onHandlerStateChange={({ nativeEvent }) => {
+                    if(nativeEvent.state === State.END) onPress(prev); 
+                  }}
+                >
+                  <View style={styles.touchable_panel} />
+                </TapGestureHandler>
+                <TapGestureHandler
+                  onHandlerStateChange={({ nativeEvent }) => {
+                    if(nativeEvent.state === State.END) onPress(next); 
+                  }}
+                >
+                  <View style={styles.touchable_panel} />
+                </TapGestureHandler>
+              </View>
+            </View>
+            <View style={styles.touchable_bar_container}>
+              <View style={styles.touchable_bar_container_row}>
+              {
+                list.map((item, id) => {
+                  return (
+                    <TouchableWithoutFeedback 
+                      onPress={() => onPress(new Animated.Value(id))}
+                    >
+                      <Animated.View 
+                        style={{ 
+                          ...styles.touchable_bar, 
+                          width: INDICATOR_WIDTH, 
+                          height: INDICATOR_HEIGHT, 
+                          opacity: item.indicatorOpacity 
+                        }} 
+                      />
+                    </TouchableWithoutFeedback>
+                  ); 
+                })
+              }
+              </View>
             </View>
           </View>
-          <View style={{ position: 'absolute', height: 20, width: '100%', paddingTop: 20 }}>
-            <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}>
-            {
-              list.map((item, id) => {
-                return (
-                  <TouchableWithoutFeedback 
-                    onPress={() => onPress(new Animated.Value(id))}
-                  >
-                    <Animated.View 
-                      style={{ width: INDICATOR_WIDTH, height: INDICATOR_HEIGHT, borderRadius: 50, backgroundColor: 'white', opacity: item.indicatorOpacity }} 
-                    />
-                  </TouchableWithoutFeedback>
-                ); 
-              })
-            }
-            </View>
-          </View>
-        </View>
-      </Animated.View>
+        </Animated.View>
+      </View>
     </PanGestureHandler>
   )
 
@@ -196,3 +218,55 @@ export default function Photo(props) {
     next.setValue(curr._value+1); 
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }, 
+  animation_container: {
+    alignSelf: 'center'
+  }, 
+  image_animation_container: {
+    position: 'absolute', 
+    width: '100%', 
+    height: '100%', 
+    alignItems: 'center'
+  }, 
+  image_animation: {
+    width: '100%', 
+    height: '100%'
+  }, 
+  touchable_container: {
+    position: 'absolute', 
+    height: '100%', 
+    width: '100%'
+  }, 
+  touchable_panel_container: {
+    position: 'absolute', 
+    height: '100%', 
+    width: '100%'
+  }, 
+  touchable_panel_row: {
+    flex: 1, 
+    flexDirection: 'row'
+  }, 
+  touchable_panel: {
+    flex: 1
+  }, 
+  touchable_bar_container: { 
+    position: 'absolute', 
+    height: 20, 
+    width: '100%', 
+    paddingTop: 20 
+  }, 
+  touchable_bar_container_row: {
+    flex: 1, 
+    flexDirection: 'row', 
+    justifyContent: 'space-around'
+  }, 
+  touchable_bar: {
+    borderRadius: 50, 
+    backgroundColor: 'white'
+  }
+}); 
+
