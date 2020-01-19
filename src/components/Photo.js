@@ -51,10 +51,7 @@ export default function Photo(props) {
   return (
     <PanGestureHandler 
       enabled={swipeEnabled}
-      onGestureEvent={({ nativeEvent }) => {
-        const { translationX } = nativeEvent; 
-        onSwipeActive(translationX); 
-      }}
+      onGestureEvent={onSwipeActive}
       onHandlerStateChange={onHandlerStateChange}
     >
       <Animated.View style={{...imageStyle, alignSelf: 'center'}}>
@@ -116,6 +113,7 @@ export default function Photo(props) {
     if(list[target._value]) {
       list[curr._value].imageOpacity.setValue(0); 
       list[target._value].imageOpacity.setValue(1); 
+      list[target._value].panX.setValue(0); 
 
       // show target indicator
       updateIndicators(target); 
@@ -140,7 +138,8 @@ export default function Photo(props) {
     }
   }
 
-  function onSwipeActive(translationX) {
+  function onSwipeActive({ nativeEvent }) {
+    const { translationX } = nativeEvent; 
     list[curr._value].panX.setValue(translationX); 
     if(translationX > 0 && list[prev._value]) { // right swipe
       list[prev._value].panX.setValue(translationX - width); 
