@@ -23,26 +23,36 @@ export default function Photo(props) {
    * after open/close info page
    */
   const { 
-    curr, 
-    prev, 
-    next, 
+    top, 
     photos, 
     swipeEnabled, 
     imageStyle, 
     isInfoPageEnabled 
   } = props; 
 
-  const list = [{
-    panX: new Animated.Value(0), 
-    imageOpacity: new Animated.Value(1), 
-    indicatorOpacity: new Animated.Value(1)
-  }]; 
+  let {
+    curr, 
+    prev, 
+    next, 
+  } = props; 
 
-  for(let i = 1; i < photos.length; i++) {
+  if(!top) { 
+    /** 
+     * use different pointers so 
+     * the card behind won't change
+     * with the top pointers
+     */
+    curr = new Animated.Value(0); 
+    prev= new Animated.Value(-1); 
+    next = new Animated.Value(1); 
+  }
+  
+  const list = []
+  for(let i = 0; i < photos.length; i++) {
     list.push({
       panX: new Animated.Value(0), 
-      imageOpacity: new Animated.Value(0), 
-      indicatorOpacity: new Animated.Value(0.5)
+      imageOpacity: new Animated.Value(curr._value===i ? 1:0), 
+      indicatorOpacity: new Animated.Value(curr._value===i ? 1:0.5)
     }); 
   }
 
@@ -153,8 +163,14 @@ export default function Photo(props) {
     } = nativeEvent; 
 
     if(state === State.BEGAN) {
-      if(list[prev._value]) list[prev._value].panX.setValue(translationX - width); 
-      if(list[next._value]) list[next._value].panX.setValue(translationX + width); 
+      if(list[prev._value]) {
+        list[prev._value].panX.setValue(translationX - width); 
+        list[prev._value].imageOpacity.setValue(1); 
+      }
+      if(list[next._value]) {
+        list[next._value].panX.setValue(translationX + width); 
+        list[next._value].imageOpacity.setValue(1); 
+      }
     } else if(state === State.END) {
       onSwipeEnd(translationX > 0 ? prev : next, translationX, velocityX); 
     }
@@ -188,7 +204,10 @@ export default function Photo(props) {
           toValue: 0, 
           bounciness: 0
         })
-      ]).start(); 
+      ]).start(() => {
+        if(list[prev._value]) list[prev._value].imageOpacity.setValue(0); 
+        if(list[next._value]) list[next._value].imageOpacity.setValue(0); 
+      }); 
       updatePointers(target);
     } else {
       const animatedEvents = [
@@ -203,7 +222,10 @@ export default function Photo(props) {
           })
         ); 
       }
-      Animated.parallel(animatedEvents).start(); 
+      Animated.parallel(animatedEvents).start(() => {
+        if(list[prev._value]) list[prev._value].imageOpacity.setValue(0); 
+        if(list[next._value]) list[next._value].imageOpacity.setValue(0); 
+      }); 
     }
   }
 

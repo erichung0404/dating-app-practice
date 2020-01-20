@@ -12,6 +12,7 @@ function PhotoController(props) {
     curr, 
     prev, 
     next, 
+    top,
     photos, 
     swipeEnabled, 
     imageStyle, 
@@ -23,6 +24,7 @@ function PhotoController(props) {
       curr={curr} 
       prev={prev} 
       next={next}
+      top={top}
       photos={photos}
       swipeEnabled={swipeEnabled}
       imageStyle={imageStyle}

@@ -1,15 +1,23 @@
 import { 
 	CARD_POINTER_UPDATE, 
 	CARD_INFO_OPENED, 
-	CARD_INFO_CLOSED
+	CARD_INFO_CLOSED, 
+	PHOTO_UPDATED
 } from '../constants/actionTypes'; 
 
-export const updateCurr = dest => ({
-	type: CARD_POINTER_UPDATE, 
-	payload: {
-		curr: dest
+export const updateCurr = dest => {
+	return dispatch => {
+		dispatch({
+			type: PHOTO_UPDATED
+		}); 
+		dispatch({
+			type: CARD_POINTER_UPDATE, 
+			payload: {
+				curr: dest
+			}
+		})
 	}
-})
+}
 
 export const openInfoScreen = animation => {
 	const {
@@ -43,6 +51,6 @@ export const closeInfoScreen = animation => {
     height.setValue(1); 
 
 	return {
-		type: CARD_INFO_CLOSED, 
+		type: CARD_INFO_CLOSED
 	}
 }

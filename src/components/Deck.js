@@ -12,6 +12,9 @@ export default function Deck(props) {
     navigation, 
     profiles, 
     curr, 
+    pan, 
+    angle, 
+    opacity, 
     showInfo, 
     updateCurr, 
     openInfoScreen, 
@@ -23,13 +26,11 @@ export default function Deck(props) {
   const next = curr + 1; 
   let swipeDirection = 'central'; 
 
-  const pan = new Animated.ValueXY(); 
-  const angle = new Animated.Value(0); 
-  const angleConfigs = angle.interpolate({
+  const angleConfig = angle.interpolate({
       inputRange: [0, 100],
       outputRange: ['0deg', '45deg']
   });
-  const opacity = new Animated.Value(1); 
+  // const opacity = new Animated.Value(1); 
   const borderRadius = new Animated.Value(10); 
   const width = new Animated.Value(0); 
   const height = new Animated.Value(1);
@@ -84,12 +85,13 @@ export default function Deck(props) {
                           transform: [
                             {translateX: pan.x}, 
                             {translateY: pan.y}, 
-                            {rotate: angleConfigs}
+                            {rotate: angleConfig}
                           ], 
                         }}
                       >
                       {
                         <Card 
+                          top={true}
                           profile={profile} 
                           style={cardStyle} 
                           infoPressHandler={() => openInfoScreen(animation)} 
@@ -105,6 +107,7 @@ export default function Deck(props) {
                       style={styles.card_container}
                     >
                       <Card 
+                        top={false}
                         profile={profile} 
                         style={cardStyle} 
                         swipeEnabled={false} 
@@ -130,8 +133,8 @@ export default function Deck(props) {
             </PanGestureHandler>
             <View style={styles.options_container}>
               <Options 
-                dislikeHandler={handleDislike} 
-                likeHandler={handleLike} 
+                dislikeHandler={handleDislike}
+                likeHandler={handleLike}
               />
             </View>
           </View>
@@ -200,6 +203,7 @@ export default function Deck(props) {
   }
 
   function handleDislike() {
+    if(showInfo) closeInfoScreen(animation); 
     Animated.sequence([
       Animated.parallel([
         rotate(10, 500), 
@@ -207,13 +211,15 @@ export default function Deck(props) {
         fadeOut(0, 1000)
       ]), 
       position({x: 0, y: 0}, 0), 
-      rotate(0, 100)
-    ]).start(() => { 
+      rotate(0, 3000)
+    ]).start(() => {
       updateCurr(next); 
+      opacity.setValue(1); 
     }); 
   }
 
   function handleLike() {
+    if(showInfo) closeInfoScreen(animation); 
     Animated.sequence([
       Animated.parallel([ 
         rotate(-10, 500), 
@@ -224,6 +230,7 @@ export default function Deck(props) {
       rotate(0, 0)
     ]).start(() => { 
       updateCurr(next); 
+      opacity.setValue(1); 
     }); 
   }
 }

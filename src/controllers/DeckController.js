@@ -14,6 +14,9 @@ function DeckController(props) {
     navigation, 
     profiles, 
     curr, 
+    pan, 
+    angle, 
+    opacity, 
     showInfo, 
     updateCurr, 
     openInfoScreen, 
@@ -25,6 +28,9 @@ function DeckController(props) {
       navigation={navigation}
       profiles={profiles}
       curr={curr}
+      pan={pan}
+      angle={angle}
+      opacity={opacity}
       showInfo ={showInfo}
       updateCurr={updateCurr}
       openInfoScreen={openInfoScreen}
@@ -36,6 +42,9 @@ function DeckController(props) {
 const mapStateToProps = state => ({
   profiles: state.profile.profiles, 
   curr: state.card.curr, 
+  pan: state.card.pan, 
+  angle: state.card.angle, 
+  opacity: state.card.opacity, 
   showInfo: state.card.showInfo
 })
 
