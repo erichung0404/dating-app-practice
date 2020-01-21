@@ -10,18 +10,23 @@ import MessageController from './MessageController';
 
 const NavigationController = createMaterialTopTabNavigator(
   {
-    ProfileController: { 
+    ProfileController: {
       screen: ProfileController, 
-      navigationOptions: {
-        tabBarIcon: ({tintColor, focused}) => (
-            <Ionicons
-              name={'ios-person'}
-              size={30}
-              style={{color: tintColor}}
-            />
-        ),
-      }, 
-      swipeEnabled: true
+      navigationOptions: ({ navigation }) => { 
+        const { params } = navigation.state; 
+
+        return {
+          tabBarIcon: ({tintColor, focused}) => (
+              <Ionicons
+                name={'ios-person'}
+                size={30}
+                style={{color: tintColor}}
+              />
+          ),
+          swipeEnabled: true, 
+          tabBarVisible: params && params.tabBarVisible
+        }
+      }
     }, 
     HomeController: { 
       screen: HomeController, 

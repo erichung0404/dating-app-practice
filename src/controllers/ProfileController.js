@@ -1,10 +1,31 @@
 import React from 'react'; 
-import { View, Text } from 'react-native'; 
+import { connect } from 'react-redux'; 
 
-export default function ProfileController(props) {
-  return (
-    <View style={{ flex: 1, backgroundColor: 'gray', justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ color: 'black' }}>Test Page</Text>
-    </View>
-  )
+import Profile from '../components/Profile'; 
+
+function ProfileController(props) {
+	const { 
+		navigation, 
+		pan 
+	} = props; 
+
+	const user = {
+		name: 'Mandy Banana', 
+		age: '18', 
+		school: 'UMass'
+	}
+
+	return (
+		<Profile 
+			user={user} 
+			navigation={navigation}
+			pan={pan}
+		/>
+	)
 }
+
+const mapStateToProps = state => ({
+	pan: state.profilePage.pan
+})
+
+export default connect(mapStateToProps)(ProfileController); 
