@@ -55,6 +55,14 @@ const DATA = [
 				data: 'yes'
 			}
 		]
+	}, 
+	{
+		title: 'Notification', 
+		data: [
+			{
+				title: 'Push Notification'
+			}
+		]
 	}
 ]
 
@@ -71,6 +79,7 @@ export default function Settings(props) {
 				keyExtractor={(item, index) => item + index}
 				sections={DATA}
 		        renderSectionHeader={({ section }) => <Text style={styles.title}>{section.title}</Text>}
+		        stickySectionHeadersEnabled={false}
 		        renderItem={({ item }) => {
 		        	switch(item.title) {
 		        		case 'Location': 
@@ -113,6 +122,12 @@ export default function Settings(props) {
         							}
         						/>
 							)
+						case 'Push Notification': 
+							return (
+		        				<Item 
+		        					item={item}
+		        				/>
+	        				)
 		        		default: 
 		        			return (
 		        				<Item item={item} />
@@ -161,7 +176,7 @@ const styles = StyleSheet.create({
 	title: {
 		paddingLeft: 15, 
 		color: 'grey', 
-		marginTop: 10, 
+		marginTop: 40, 
 		marginBottom: 5
 	}, 
 	item_container: {
