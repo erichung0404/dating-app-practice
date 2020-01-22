@@ -126,36 +126,6 @@ export default function Settings(props) {
 }
 
 
-function Item2({ section, routing=true, LeftComponent, RightComponent, BottomComponent }) {
-	const { title, data } = section; 
-
-	return (
-		<View style={styles.item_container}>
-			<View style={styles.item_panel_container}>
-	    		<View style={styles.item_panel_cols}>
-	    			<View style={styles.item_panel}>
-	    				<View style={styles.item}>
-		    				{ LeftComponent ? <LeftComponent item={item} /> : null }
-	    				</View>
-	    				<View style={styles.item}>
-		    				{ RightComponent ? <RightComponent item={item} /> : null }
-	    				</View>
-					</View>
-					{ BottomComponent ? <BottomComponent item={item} /> : null }
-				</View>
-				{
-					routing ? 
-						<Entypo
-							name={'chevron-right'}
-							size={20}
-							style={styles.icon}
-						/> : null
-				}
-			</View>
-		</View>
-	); 
-}
-
 function Item({ item, routing=true, LeftComponent, RightComponent, BottomComponent }) {
 	return (
 		<View style={styles.item_container}>
@@ -183,26 +153,6 @@ function Item({ item, routing=true, LeftComponent, RightComponent, BottomCompone
 		</View>
 	); 
 }
-
-function LeftComponent({ item }) {
-	return (		
-		<Text style={styles.item_title}>{item.title}</Text>
-	); 
-}; 
-
-function RightComponent({ item }) {
-	return (
-		<Text style={styles.item_data}>{item.data}</Text>
-	); 
-}
-
-function BottomComponent({ item }) {
-	return (
-		<View style={{flex: 1}} />
-	); 
-}
-
-
 
 const styles = StyleSheet.create({
 	container: {
