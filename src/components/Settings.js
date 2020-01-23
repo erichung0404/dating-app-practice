@@ -5,10 +5,11 @@ import {
 	StyleSheet, 
 	SectionList, 
 	FlatList, 
-	Slider, 
-	Switch
+	Switch, 
+	Dimensions
 } from 'react-native'; 
 import { Entypo } from '@expo/vector-icons';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 import Header from './Header'; 
 
@@ -97,12 +98,15 @@ export default function Settings(props) {
         							routing={false}
         							RightComponent={<Text style={styles.item_data}>Todo: slider value</Text>}
 		        					BottomComponent={
-		        						<Slider 
-		        							styel={styles.item_bottom}
-		        							minimumValue={0}
-										    maximumValue={1}
-										    minimumTrackTintColor="red"
-										    maximumTrackTintColor="lightgrey"
+		        						<MultiSlider
+											// todo: dynamically set length using onLayout
+											containerStyle={{alignSelf: 'flex-end', paddingRight: 15}}
+											sliderLength={320}
+											values={[0]}
+											min={0}
+											max={1}
+											selectedStyle={{backgroundColor: 'red'}}
+											unselectedStyle={{backgroundColor: 'lightgray'}}
 										/>
 									}
         						/>
@@ -121,6 +125,25 @@ export default function Settings(props) {
     									/>
         							}
         						/>
+							)
+						case 'Age': 
+							return (
+								<Item 
+									item={item}
+									routing={false}
+									BottomComponent={
+										<MultiSlider
+											// todo: dynamically set length using onLayout
+											containerStyle={{alignSelf: 'flex-end', paddingRight: 15}}
+											sliderLength={320}
+											values={[18, 64]}
+											min={18}
+											max={64}
+											selectedStyle={{backgroundColor: 'red'}}
+											unselectedStyle={{backgroundColor: 'lightgray'}}
+										/>
+									}
+								/>
 							)
 						case 'Push Notification': 
 							return (

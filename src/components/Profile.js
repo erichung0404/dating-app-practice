@@ -148,7 +148,7 @@ export default function Profile(props) {
 	)
 
 	function slideIn(id) {
-		navigation.setParams({tabBarVisible: false}); 
+		navigation.setParams({swipeEnabled: false, tabBarVisible: false}); 
 		Animated.spring(pan[id], {
 			toValue: {x: 0, y: 0}, 
 			bounciness: 0
@@ -156,7 +156,7 @@ export default function Profile(props) {
 	}
 
 	function slideOut(id) {
-		navigation.setParams({tabBarVisible: true}); 
+		navigation.setParams({swipeEnabled: true, tabBarVisible: true}); 
 		Animated.timing(pan[id], {
 			toValue: {x: 0, y: height}, 
 			duration: 500

@@ -23,7 +23,7 @@ const NavigationController = createMaterialTopTabNavigator(
                 style={{color: tintColor}}
               />
           ),
-          swipeEnabled: true, 
+          swipeEnabled: params && params.swipeEnabled,  
           tabBarVisible: params && params.tabBarVisible
         }
       }

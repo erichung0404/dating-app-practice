@@ -30,7 +30,6 @@ export default function Deck(props) {
       inputRange: [0, 100],
       outputRange: ['0deg', '45deg']
   });
-  // const opacity = new Animated.Value(1); 
   const borderRadius = new Animated.Value(10); 
   const width = new Animated.Value(0); 
   const height = new Animated.Value(1);

@@ -9,6 +9,7 @@
     "babel-preset-expo": "^7.0.0"
   },
   "dependencies": {
+    "@ptomasroos/react-native-multi-slider": "^1.0.0",
     "@react-native-community/audio-toolkit": "2.0.2",
     "@react-native-community/masked-view": "^0.1.1",
     "@react-native-community/slider": "^2.0.8",
