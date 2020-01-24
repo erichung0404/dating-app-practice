@@ -5,9 +5,9 @@ import {
 	Image,
 	StyleSheet, 
 	Dimensions, 
-	Animated
+	Animated, 
+	TouchableOpacity
 } from 'react-native'; 
-import { TapGestureHandler, State } from 'react-native-gesture-handler'; 
 import { Ionicons } from '@expo/vector-icons';
 
 import Settings from './Settings'; 
@@ -39,11 +39,7 @@ export default function Profile(props) {
 					</Text>
 					<View style={styles.function_container}> 
 						<View style={styles.button_container}>
-							<TapGestureHandler
-								onHandlerStateChange={({ nativeEvent }) => {
-									if(nativeEvent.state === State.END) slideIn(0); 
-								}}
-							>
+							<TouchableOpacity onPress={()=>slideIn(0)}>
 								<View style={styles.icon_container}>
 									<Ionicons 
 										name={'md-settings'}
@@ -51,15 +47,11 @@ export default function Profile(props) {
 										style={styles.icon}
 									/>
 								</View>
-							</TapGestureHandler>
+							</TouchableOpacity>
 							<Text style={styles.text}>Settings</Text>
 						</View>
 						<View style={styles.button_container}>
-							<TapGestureHandler
-								onHandlerStateChange={({ nativeEvent }) => {
-									if(nativeEvent.state === State.END) slideIn(1); 
-								}}
-							>
+							<TouchableOpacity onPress={()=>slideIn(1)}>
 								<View style={{
 									...styles.icon_container, 
 									...styles.iccon_container_camera
@@ -71,15 +63,11 @@ export default function Profile(props) {
 										style={styles.icon_camera}
 									/>
 								</View>
-							</TapGestureHandler>
+							</TouchableOpacity>
 							<Text style={styles.text}>Add Photo</Text>
 						</View>
 						<View style={styles.button_container}>
-							<TapGestureHandler
-								onHandlerStateChange={({ nativeEvent }) => {
-									if(nativeEvent.state === State.END) slideIn(2); 
-								}}
-							>
+							<TouchableOpacity onPress={()=>slideIn(2)}>
 								<View style={styles.icon_container}>
 									<Ionicons 
 										name={'md-create'}
@@ -87,7 +75,7 @@ export default function Profile(props) {
 										style={styles.icon}
 									/>
 								</View>
-							</TapGestureHandler>
+							</TouchableOpacity>
 							<Text style={styles.text}>Edit</Text>
 						</View>
 					</View>
@@ -109,7 +97,7 @@ export default function Profile(props) {
 				}}
 			>
 				<Settings 
-					slideOut={() => slideOut(0)}
+					screenProps={{slideOut: () => slideOut(0)}}
 				/>
 			</Animated.View>
 			<Animated.View 
