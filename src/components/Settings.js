@@ -18,6 +18,12 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import Header from './Header'; 
 
+import Phone from './Phone'; 
+import Email from './Email'; 
+import Location from './Location'; 
+import ShowMe from './ShowMe'; 
+import Notification from './Notification'; 
+
 const DATA = [
 	{
 		title: 'ACCOUNT', 
@@ -80,12 +86,11 @@ export default createAppContainer(createStackNavigator({
 			headerTitleStyle: { fontSize: 20 }
 		})
 	}, 
-	PhoneSetup: {screen: PhoneSetup}, 
-	EmailSetup: {screen: EmailSetup}, 
-	LocationSetup: {screen: LocationSetup}, 
-	MaxDistanceSetup: {screen: MaxDistanceSetup}, 
-	ShowMeSetup: {screen: ShowMeSetup}, 
-	AgeSetup: { screen: AgeSetup}
+	Phone: {screen: Phone}, 
+	Email: {screen: Email}, 
+	Location: {screen: Location}, 
+	'Show Me': {screen: ShowMe}, 
+	'Push Notification': {screen: Notification}
 }, {
 	initialRoute: 'Settings', 
 }))
@@ -112,7 +117,7 @@ function Settings(props) {
 		        			return (
 		        				<Item 
 		        					item={item}
-		        					navigate={() => navigation.push('LocationSetup')}
+		        					navigate={() => navigation.push('Location')}
 		        					RightComponent={<Text style={styles.item_data}>{item.data}</Text>}
 		        					BottomComponent={<Text style={styles.item_data}>Todo: fetch location</Text>}
 		        				/>
@@ -121,7 +126,6 @@ function Settings(props) {
         					return (
         						<Item
         							item={item}
-        							navigate={() => navigation.push('MaxDistanceSetup')}
         							routing={false}
         							RightComponent={<Text style={styles.item_data}>Todo: slider value</Text>}
 		        					BottomComponent={
@@ -141,7 +145,6 @@ function Settings(props) {
 							return (
 								<Item
         							item={item}
-        							navigate={() => navigation.push('ShowMeSetup')}
         							routing={false}
         							RightComponent={
         								<Switch 
@@ -157,7 +160,6 @@ function Settings(props) {
 							return (
 								<Item 
 									item={item}
-									navigate={() => navigation.push('AgeSetup')}
 									routing={false}
 									BottomComponent={
 										<MultiSlider
@@ -172,15 +174,12 @@ function Settings(props) {
 									}
 								/>
 							)
-						case 'Push Notification': 
-							return (
-		        				<Item 
-		        					item={item}
-		        				/>
-	        				)
 		        		default: 
 		        			return (
-		        				<Item item={item} />
+		        				<Item 
+		        					item={item} 
+		        					navigate={()=>navigation.push(item.title)}
+		        				/>
 			    			)
 		        	}
         			
@@ -193,7 +192,7 @@ function Settings(props) {
 
 function Item({ item, navigate, routing=true, LeftComponent, RightComponent, BottomComponent }) {
 	return (
-		<TouchableOpacity onPress={navigate}>
+		<TouchableOpacity onPress={navigate} disabled={!routing}>
 			<View style={styles.item_container}>
 				<View style={styles.item_panel_container}>
 		    		<View style={styles.item_panel_cols}>
@@ -220,53 +219,12 @@ function Item({ item, navigate, routing=true, LeftComponent, RightComponent, Bot
 		</TouchableOpacity>
 	); 
 
-	function onHandlerStateChange({ nativeEvent }) {
-		const { state } = nativeEvent; 
-		if(state === State.END) slideIn(); 
-	}
-
 	function slideIn() {
 		Animated.spring(pan, {
 			toValue: {x: 0, y: 0}, 
 			bounciness: 0
 		}).start(); 
 	}
-}
-
-function PhoneSetup(props) {
-	return (
-		<View style={{flex: 1, backgroundColor: 'yellow'}} />
-	)
-}
-
-function EmailSetup(props) {
-	return (
-		<View style={{flex: 1, backgroundColor: 'orange'}} />
-	)
-}
-
-function LocationSetup(props) {
-	return (
-		<View style={{flex: 1, backgroundColor: 'green'}} />
-	)
-}
-
-function MaxDistanceSetup(props) {
-	return (
-		<View style={{flex: 1, backgroundColor: 'white'}} />
-	)
-}
-
-function ShowMeSetup(props) {
-	return (
-		<View style={{flex: 1, backgroundColor: 'blue'}} />
-	)
-}
-
-function AgeSetup(props) {
-	return (
-		<View style={{flex: 1, backgroundColor: 'red'}} />
-	)
 }
 
 const styles = StyleSheet.create({
