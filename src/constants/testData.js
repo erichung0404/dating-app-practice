@@ -59,6 +59,38 @@ const DB = {
         require('../../assets/1800x1200_great_dane_dog_drooling_other.jpg')
       ]
     }, 
+  ], 
+  settings: [
+    {
+      id: 1, 
+      Phone: '12345678', 
+      Email: 'abcde@gmail.com', 
+      'Max Distance': 30, 
+      'Show Me': 'Male', 
+      Age: '18-40', 
+      'Show Me on App': 'true', 
+      'Push Notification': 'true'
+    }, 
+    {
+      id: 2, 
+      Phone: '1209878', 
+      Email: 'dcbae@gmail.com', 
+      'Max Distance': 50, 
+      'Show Me': 'All', 
+      Age: '28-40', 
+      'Show Me on App': 'true', 
+      'Push Notification': 'true'
+    }, 
+    {
+      id: 3, 
+      Phone: '1234908', 
+      Email: 'eric@gmail.com', 
+      'Max Distance': 30, 
+      'Show Me': 'Female', 
+      Age: '38-40', 
+      'Show Me on App': 'true', 
+      'Push Notification': 'false'
+    }
   ]
 }
 
@@ -72,13 +104,26 @@ class Server {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         const profiles = this.db.profiles.slice(0, n); 
-        if(profiles !== undefined) {
+        if(profiles) {
           resolve(profiles); 
         } else {
           reject(new Error(`Could not handle this request with id: ${id}`)); 
         }
       }, 1000)
     }); 
+  }
+
+  getSettings = id => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const settings = this.db.settings.filter(user=>user.id===id)[0]; 
+        if(settings) {
+          resolve(settings); 
+        } else {
+          reject(new Error(`Could not handle this request with id: ${id}`)); 
+        }
+      }, 3000)
+    })
   }
 }
 

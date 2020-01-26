@@ -10,7 +10,7 @@ import {
 } from 'react-native'; 
 import { Ionicons } from '@expo/vector-icons';
 
-import Settings from './Settings'; 
+import SettingsNavigator from '../controllers/SettingsNavigator'; 
 import Gallery from './Gallery'; 
 import Edit from './Edit'; 
 
@@ -96,7 +96,7 @@ export default function Profile(props) {
 					]
 				}}
 			>
-				<Settings 
+				<SettingsNavigator
 					screenProps={{slideOut: () => slideOut(0)}}
 				/>
 			</Animated.View>

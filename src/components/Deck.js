@@ -210,7 +210,7 @@ export default function Deck(props) {
         fadeOut(0, 1000)
       ]), 
       position({x: 0, y: 0}, 0), 
-      rotate(0, 3000)
+      rotate(0, 0)
     ]).start(() => {
       updateCurr(next); 
       opacity.setValue(1); 

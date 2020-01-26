@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'; 
+import React from 'react'; 
 import { 
 	Modal, 
 	View, 
@@ -13,102 +13,17 @@ import {
 } from 'react-native'; 
 import { Entypo } from '@expo/vector-icons';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import { createAppContainer } from 'react-navigation'; 
-import { createStackNavigator } from 'react-navigation-stack'; 
-
-import Header from './Header'; 
-
-import Phone from './Phone'; 
-import Email from './Email'; 
-import Location from './Location'; 
-import ShowMe from './ShowMe'; 
-import Notification from './Notification'; 
-
-const DATA = [
-	{
-		title: 'ACCOUNT', 
-		data: [
-			{
-				title: 'Phone', 
-				data: '12345678'
-			}, 
-			{
-				title: 'Email', 
-				data: 'abcde@gmail.com'
-			}
-		]
-	}, 
-	{
-		title: 'DISCOVERY', 
-		data: [
-			{
-				title: 'Location', 
-				data: 'My Location'
-			}, 
-			{
-				title: 'Max Distance', 
-				data: '0 km'
-			}, 
-			{
-				title: 'Show Me', 
-				data: 'Male'
-			}, 
-			{
-				title: 'Age', 
-				data: '18-64'
-			}
-		]
-	}, 
-	{
-		title: '', 
-		data: [
-			{
-				title: 'Show Me on App', 
-				data: 'yes'
-			}
-		]
-	}, 
-	{
-		title: 'Notification', 
-		data: [
-			{
-				title: 'Push Notification'
-			}
-		]
-	}
-]
-
-export default createAppContainer(createStackNavigator({
-	Settings: { 
-		screen: ({ navigation, screenProps }) => <Settings navigation={navigation} slideOut={screenProps.slideOut} />, 
-		navigationOptions: ({ navigation }) => ({
-			headerRight: () => <Header done={navigation.state.params ? navigation.state.params.slideOut : null} />, 
-			headerTitleStyle: { fontSize: 20 }
-		})
-	}, 
-	Phone: {screen: Phone}, 
-	Email: {screen: Email}, 
-	Location: {screen: Location}, 
-	'Show Me': {screen: ShowMe}, 
-	'Push Notification': {screen: Notification}
-}, {
-	initialRoute: 'Settings', 
-}))
 
 const { width, height } = Dimensions.get('screen'); 
 
-function Settings(props) {
-	const { navigation, slideOut } = props; 
-
-	useEffect(() => {
-		navigation.setParams({slideOut}); 
-	}, [])
+export default function Settings(props) {
+	const { data, navigation } = props; 
 
 	return (
 		<View style={styles.container}>
 			<SectionList 
 				keyExtractor={(item, index) => item + index}
-				sections={DATA}
+				sections={data}
 		        renderSectionHeader={({ section }) => <Text style={styles.title}>{section.title}</Text>}
 		        stickySectionHeadersEnabled={false}
 		        renderItem={({ item }) => {
@@ -118,7 +33,7 @@ function Settings(props) {
 		        				<Item 
 		        					item={item}
 		        					navigate={() => navigation.push('Location')}
-		        					RightComponent={<Text style={styles.item_data}>{item.data}</Text>}
+		        					RightComponent={<Text style={styles.item_data}>My Location</Text>}
 		        					BottomComponent={<Text style={styles.item_data}>Todo: fetch location</Text>}
 		        				/>
 	        				)
@@ -218,13 +133,6 @@ function Item({ item, navigate, routing=true, LeftComponent, RightComponent, Bot
 			</View>
 		</TouchableOpacity>
 	); 
-
-	function slideIn() {
-		Animated.spring(pan, {
-			toValue: {x: 0, y: 0}, 
-			bounciness: 0
-		}).start(); 
-	}
 }
 
 const styles = StyleSheet.create({
