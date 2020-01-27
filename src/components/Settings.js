@@ -7,12 +7,11 @@ import {
 	SectionList, 
 	FlatList, 
 	Switch, 
-	Dimensions, 
-	Animated, 
-	TouchableOpacity
+	Dimensions
 } from 'react-native'; 
-import { Entypo } from '@expo/vector-icons';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
+
+import Item from './Item'; 
 
 const { width, height } = Dimensions.get('screen'); 
 
@@ -102,37 +101,6 @@ export default function Settings(props) {
 			/>
 		</View>
 	)
-}
-
-
-function Item({ item, navigate, routing=true, LeftComponent, RightComponent, BottomComponent }) {
-	return (
-		<TouchableOpacity onPress={navigate} disabled={!routing}>
-			<View style={styles.item_container}>
-				<View style={styles.item_panel_container}>
-		    		<View style={styles.item_panel_cols}>
-		    			<View style={styles.item_panel}>
-		    				<View style={styles.item}>
-			    				{ LeftComponent ? LeftComponent : <Text style={styles.item_title}>{item.title}</Text> }
-		    				</View>
-		    				<View style={styles.item}>
-			    				{ RightComponent ? RightComponent : <Text style={styles.item_data}>{item.data}</Text> }
-		    				</View>
-						</View>
-						{ BottomComponent ? BottomComponent : null }
-					</View>
-					{
-						routing ? 
-							<Entypo
-								name={'chevron-right'}
-								size={20}
-								style={styles.icon}
-							/> : null
-					}
-				</View>
-			</View>
-		</TouchableOpacity>
-	); 
 }
 
 const styles = StyleSheet.create({

@@ -22,8 +22,63 @@ function SettingsController(props) {
 		dispatch(fetchSettings(userId));
 	}, [])
 
+	const data = [
+		{
+			title: 'ACCOUNT', 
+			data: [
+				{
+					title: 'Phone', 
+					data: settings['Phone']
+				}, 
+				{
+					title: 'Email', 
+					data: settings['Email']
+				}
+			]
+		}, 
+		{
+			title: 'DISCOVERY', 
+			data: [
+				{
+					title: 'Location', 
+					data: settings['Location']
+				}, 
+				{
+					title: 'Max Distance', 
+					data: settings['Max Distance']
+				}, 
+				{
+					title: 'Show Me', 
+					data: settings['Show Me']
+				}, 
+				{
+					title: 'Age', 
+					data: settings['Age']
+				}
+			]
+		}, 
+		{
+			title: '', 
+			data: [
+				{
+					title: 'Show Me on App', 
+					data: settings['Show Me on App']
+				}
+			]
+		}, 
+		{
+			title: 'Notification', 
+			data: [
+				{
+					title: 'Push Notification', 
+					data: settings['Push Notification']
+				}
+			]
+		}
+	]
+
 	return (
-		<Settings data={settings} navigation={navigation} />
+		<Settings data={data} navigation={navigation} />
 	)
 }
 
